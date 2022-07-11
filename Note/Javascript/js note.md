@@ -16,3 +16,11 @@ console.log(str.replace("demo", "ins")) //
 ```
 
 slice  <strong style="color: red">这个好像是可以用正则表达式的</strong>
+
+## 引用数据类型
+
+### 函数
+
+### 对象
+
+### 数组

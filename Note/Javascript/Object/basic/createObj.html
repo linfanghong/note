@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>如何创建一个JS对象</title>
+</head>
+<body>
+  <h2>请打开浏览器控制台查看输出</h2>
+  <script type="text/javascript">
+    // 1. 使用字面量的方式创建对象 需要注意的是key可以是空字符串和变量
+    const empty = {"" : "hello"}
+    console.log(empty[""]) //hello
+    // 新增的对象字面量的特性
+
+    // 2. 使用new关键字方式创建对象
+    // 使用内置类型的构建函数
+    const time = new Date()
+    const arr = new Array()
+    // 自定义构造函数
+
+    // 3. 使用Object.create()创建对象
+    // 创建一个空对象
+    const emptyObj_1 = Object.create({})
+    const emptyObj_2 = Object.create(Object.prototype)
+    console.log(emptyObj_2)
+
+    // 原型
+    console.log(empty)
+    console.log(Object.prototype)
+    console.log(Date.prototype)
+  </script>
+</body>
+</html>
