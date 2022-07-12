@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>查询和设置对象的属性</title>
+</head>
+<body>
+    <h2>请打开浏览器控制台查看输出</h2>
+  <script type="text/javascript">
+    // 1. 设置属性 可以使用点操作符和方括号操作符
+    const obj = Object.create({})
+    obj.firstProp = "one"
+    obj["secondProp"] = "two"
+    console.log(obj) // {firstProp: 'one', secondProp: 'two'}
+    // 2. 查询属性 可以使用点操作符和方括号操作符
+    //        相比于点操作符，方括号操作符可以通过变量访问属性值
+    console.log(obj.firstProp) // one
+    let propName = "firstProp"
+    console.log(obj[propName]) // one
+    propName = "secondProp"
+    console.log(obj[propName]) // two
+    // 将对象作为关联数组，进行for.in循环
+    for(const propname in obj){
+        console.log(`${propname}: ${obj[propname]}`)
+        // firstProp: one
+        // secondProp: two
+    }
+    // 3. 继承
+    //        对于查询，若当前对象中没有查询的属性，会沿着原型链查找此属性，直到原型为null
+    //        对于设置属性，无论什么情况，均不会设置原型的属性
+    const protoObj = {x: 1}
+    const newObj = Object.create(protoObj)
+    console.log(newObj) // {}
+    console.log(newObj.x) // 1
+    newObj.x = 2
+    console.log(protoObj.x) // 1
+    console.log(newObj.x) // 2
+    // 4. 访问属性报错
+    //        obj.props，若obj为null或undefined，会报错；解决方法是 "?." / "?.[ expression ]" 或者是 "&&"的方法
+    let someObj = null
+    console.log(someObj?.one) // undefined
+    console.log(someObj?.["one"]) // undefined
+    console.log(someObj && someObj.one) // null
+    // console.log(someObj.one) // TypeError
+    // 5. 删除属性，使用delete操作符，delete操作符不会删除原型上的对应属性的
+    delete newObj.x
+    console.log(protoObj.x) // 1
+    console.log(newObj.x) // 1 原型的x属性
+    // 6. 检测对象上是否有相应属性
+    //        in 操作符 把原型的属性也会包含进去
+    //        hasOwnProperty 方法 仅检测当前对象
+    //        propertyIsEnumerable 方法 在hasOwnProperty基础上，还检测了enumerable属性是否为true
+    newObj.y = 2
+    console.log("y" in newObj) // true
+    console.log("x" in newObj) // true
+    console.log(newObj.hasOwnProperty("y")) // true
+    console.log(newObj.hasOwnProperty("x")) // false
+    console.log(newObj.propertyIsEnumerable("y")) // true
+    console.log(newObj.propertyIsEnumerable("x")) // false
+  </script>
+</body>
+</html>
