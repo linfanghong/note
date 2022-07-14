@@ -57,6 +57,29 @@
     console.log(newObj.hasOwnProperty("x")) // false
     console.log(newObj.propertyIsEnumerable("y")) // true
     console.log(newObj.propertyIsEnumerable("x")) // false
+    // 7. 枚举属性
+    //        for/in 循环会枚举自有/继承的属性， 与in操作符不同的是，for/in循环仅枚举对象自有/继承的可枚举属性
+    //        通过内置方法返回对象的属性名的数组
+    //               Object.keys() 枚举自有可枚举属性，不可以是符号类型
+    //               Object.getOwnPropertyNames() 与 Object.keys() 一致
+    //               Object.getOwnPropertySymbols() 返回自有的符号属性，无论是否可枚举
+    //               Reflect.ownKeys() 返回所有自有属性名
+    for(let prop in newObj){
+      console.log(prop)
+    }
+    const ins_7 = { x: 1 }
+    const ins_7_new = Object.create(ins_7)
+    ins_7_new.y = 2
+    let three = Symbol("3")
+    ins_7_new[three] = 3
+    console.log(Object.keys(ins_7_new)) // ['y']
+    console.log(Object.getOwnPropertyNames(ins_7_new)) // ['y']
+    console.log(Object.getOwnPropertySymbols(ins_7_new)) // [Symbol(3)]
+    console.log(Reflect.ownKeys(ins_7_new)) // ['y', Symbol(3)]
+    // 8. 枚举属性的顺序
+    //        先枚举非负整数属性(表现形式是字符串) 方便数组/类数组对象属性的顺序排列
+    //        再枚举其他字符串属性 顺序为添加到对象的先后顺序 字面量中是属性出现的先后顺序
+    //        再枚举符号属性 顺序为添加到对象的先后顺序
   </script>
 </body>
 </html>
