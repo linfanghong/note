@@ -76,10 +76,56 @@
     console.log(Object.getOwnPropertyNames(ins_7_new)) // ['y']
     console.log(Object.getOwnPropertySymbols(ins_7_new)) // [Symbol(3)]
     console.log(Reflect.ownKeys(ins_7_new)) // ['y', Symbol(3)]
-    // 8. 枚举属性的顺序
+    // 8. 枚举属性的顺序 枚举函数：Object.keys() Object.getOwnPropertyNames() Object.getOwnPropertySymbols() Reflect.ownKeys() JSON.stringify()
     //        先枚举非负整数属性(表现形式是字符串) 方便数组/类数组对象属性的顺序排列
     //        再枚举其他字符串属性 顺序为添加到对象的先后顺序 字面量中是属性出现的先后顺序
     //        再枚举符号属性 顺序为添加到对象的先后顺序
+    // 9. 拓展对象 将一个对象的属性复制到另一个对象上
+    //        Object.assign(default, ...obj) 将对象源的属性添加到默认对象上，同名属性会被覆盖
+    //
+           
+    // merge()方法将对象源的属性复制到目标对象上，但是不覆盖同名属性 
+    function merge(target, ...sources){
+      for(const source of sources){
+        for(const key of Object.keys(source)){
+          if(!(key in target)){
+            target[key] = source[key]
+          }
+        }
+      }
+      return target
+    }
+    let target = {x: 1, y: 2}
+    const source = {y: 3, z: 5}
+    console.log(merge(target, source)) // {x: 1, y: 2, z: 5}
+    target = {x: 1, y: 2}
+    console.log(Object.assign(target, source)) // {x: 1, y: 3, z: 5}
+
+    // restrict()方法依据模板对象，删除目标对象中存在的，而模板对象中不存在的属性
+    function restrict(target, template){
+      for(const key of Object.keys(target)){
+        if(!(key in template)){
+          delete target[key]
+        }
+      }
+      return target
+    }
+    target = {x: 1, y: 2}
+    console.log(restrict(target, source)) // {y: 2}
+
+    // subtract()方法删除目标对象中，包含于模板对象的所有属性
+    function subtract(target, source){
+      for(const key of Object.keys(target)){
+        if(key in source){
+          delete target[key]
+        }
+      }
+      return target
+    }
+    target = {x: 1, y: 2}
+    console.log(subtract(target, source)) // {x: 1}
+
+    // 10. 对象序列化：将对象转变为JSON字符串
   </script>
 </body>
 </html>
