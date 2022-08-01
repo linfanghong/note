@@ -2,34 +2,31 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>类-工厂函数创建对象</title>
+  <title>类-class关键字创建对象</title>
 </head>
 <body>
   <h2>请打开浏览器控制台查看输出</h2>
   <script type="text/javascript">
-    function range(from, to){
-      const res = Object.assign(range.methods)
-      res.from = from
-      res.to = to
-      return res
-    }
-    range.methods = {
+    class Range {
+      constructor(from, to) {
+        this.from = from
+        this.to = to
+      }
       includes(x) {
         return (x>=this.from && x<=this.to)
-      },
+      }
       *[Symbol.iterator]() {
         for(let x=Math.ceil(this.from); x<= this.to; x++) yield x;
-      },
+      }
       toString() {
         return (`${this.from}...${this.to}`)
       }
     }
-
-    let r = range(2, 10)
-    console.log(r.includes(5))
-    console.log(r.includes(1))
-    console.log(r.toString())
-    console.log([...r])
+    let ins = new Range(2, 10)
+    console.log(ins.includes(5))
+    console.log(ins.includes(1))
+    console.log(ins.toString())
+    console.log([...ins])
   </script>
 </body>
 </html>

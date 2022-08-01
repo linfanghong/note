@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>浅析数据劫持</title>
+</head>
+<body>
+  <p>
+    input1=>
+    <input type="text" id="input1">
+  </p>
+  <p>
+    input2=>
+    <input type="text" id="input2">
+  </p>
+  <p>
+    结果展示: input1 / input2+1
+    <div id="result">111</div>
+  </p>
+  <script type="text/javascript">
+    oInput1=document.querySelector("#input1")
+    oInput2=document.querySelector("#input2")
+    oResult=document.querySelector("#result")
+    oResult.innerHTML = oInput2.value = oInput1.value = 0
+    let obj={}
+    Object.defineProperty(obj, "val1", {
+      configurable: true,
+      set: (newvalue) => {
+        this.val1=newvalue
+        oInput2.value = this.val1
+        oResult.innerHTML = this.val1
+      },
+      get: () => {
+        return this.val1
+      }
+    })
+    Object.defineProperty(obj, "val2", {
+      configurable: true,
+      set: (newvalue) => {
+        this.val2=newvalue
+        oInput1.value = this.val2
+        oResult.innerHTML = this.val2 + 1
+      },
+      get: () => {
+        return this.val2
+      }
+    })
+    oInput1.addEventListener("keyup", () => {
+      obj.val1 = Number(oInput1.value)
+    })
+    oInput2.addEventListener("keyup", () => {
+      obj.val2 = Number(oInput2.value)
+    })
+  </script>
+</body>
+</html>
