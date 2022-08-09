@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>原型继承</title>
+</head>
+<body>
+  <h2>请打开浏览器控制台查看输出</h2>
+  <script>
+    class Person {
+      constructor(name, age) {
+        this.name = name
+      }
+    }
+
+    class Student extends Person {
+      constructor(name, score) {
+        super(name)
+        this.score = score
+      }
+      introduce() {
+        console.log(`我是${this.name}, 我考了${this.score}分`)
+      }
+    }
+    const student = new Student("semon", 80)
+    student.introduce()
+
+    class Teacher extends Person {
+      constructor(name, subject) {
+        super(name)
+        this.subject = subject
+      }
+      teach() {
+        console.log(`我是${this.name}, 我教${this.subject}`)
+      }
+    }
+    const teacher = new Teacher("mike", "数据结构与算法")
+    teacher.teach()
+  </script>
+</body>
+</html>
