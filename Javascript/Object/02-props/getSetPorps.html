@@ -50,6 +50,9 @@
     //        in 操作符 把原型的属性也会包含进去
     //        hasOwnProperty 方法 仅检测当前对象
     //        propertyIsEnumerable 方法 在hasOwnProperty基础上，还检测了enumerable属性是否为true
+    //     拓展
+    //        如何判断属性是原型上的，而非当前对象的自有属性
+    //          [props] in [object] && ! [object].hasOwnProperty([props])
     newObj.y = 2
     console.log("y" in newObj) // true
     console.log("x" in newObj) // true
