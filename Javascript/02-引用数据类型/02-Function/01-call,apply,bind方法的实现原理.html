@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>call/apply/bind方法的实现原理</title>
+</head>
+<body>
+  <h2>请打开控制台查看</h2>
+  <script>
+    // 1. 实现call的核心功能
+    Function.prototype.fakeCall = function(context) {
+      // func.fakeCall() fakeCall函数中的this指向调用上下文，即func
+      context = context || window // 第一个参数为null时的处理
+      const originFunc = this
+      context.newFunc = this
+      context.newFunc()
+      // 删除给对象增添的这个方法，不破坏原来的对象
+      delete context.newFunc
+    }
+    const showFuncName = function() {
+      console.log(this)
+      console.log(this.name)
+    }
+    const testFunc = function(){}
+    showFuncName.fakeCall(testFunc)
+    // 2. call带参数的完整版功能
+    Function.prototype.fakeCallComplete = function(context, ...args) {
+      context = context || window // 第一个参数为null时的处理
+      const originFunc = this
+      context.newFunc = originFunc
+      context.newFunc(...args)
+      delete context.newFunc
+    }
+    const showPersonInfo = function(skill1, skill2, skill3) {
+      console.log(this)
+      console.log(this.name)
+      console.log(skill1)
+      console.log(skill2)
+      console.log(skill3)
+    }
+    const xiaoming = { name: "xiaoming" }
+    showPersonInfo.fakeCallComplete(xiaoming, '吃饭', '睡觉', '学习')
+    // 3. apply方法传入的参数是个数组
+    Function.prototype.fakeApplyComplete = function(context, arrArguments) {
+      context = context || window // 第一个参数为null时的处理
+      const originFunc = this
+      context.newFunc = originFunc
+      context.newFunc(...arrArguments)
+      delete context.newFunc
+    }
+    showPersonInfo.fakeApplyComplete(xiaoming, ['吃饭', '睡觉', '学习'])
+  </script>
+</body>
+</html>
