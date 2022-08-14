@@ -49,6 +49,16 @@
       delete context.newFunc
     }
     showPersonInfo.fakeApplyComplete(xiaoming, ['吃饭', '睡觉', '学习'])
+    // 4. bind方法的实现
+    console.log("########################")
+    Function.prototype.fakeBind = function(context, ...args) {
+      const originFunc = this
+      return function(...restArgs) {
+        originFunc.call(context, ...args.concat(restArgs))
+      }
+    }
+    const newShowPersonInfo = showPersonInfo.fakeBind(xiaoming, '吃饭', '睡觉')
+    newShowPersonInfo('学习')
   </script>
 </body>
 </html>
