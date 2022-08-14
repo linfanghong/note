@@ -74,16 +74,3 @@
 ## 引用数据类型 2
 - object
 - function
-
-# 数据类型检测
-## typeof 检测数据类型的逻辑运算符
-## instanceof 检测是否为某个类的实例
-## constructor 检测构造函数
-## Object.prototype.toString.call 检测数据类型
-## Array.isArray() 检测是否为数组对象
-
-- typeof [value] 返回当前值的数据类型
-  - 返回的结果是字符串
-  - 局限性
-    - typeof null => "object"
-    - typeof 不能细分对象数据类型
