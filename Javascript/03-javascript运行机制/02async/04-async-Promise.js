@@ -139,6 +139,7 @@ fs.readFile(path.resolve(__dirname+'/test/01.txt'), 'utf-8', (err, data) => {
 // 3. 如果then返回的不是一个Promise对象，则默认是走成功的
 // 4. 如果Promise状态为失败或者抛出异常，则走失败
 
+/*
 const fs = require('fs')
 const path = require('path')
 
@@ -156,17 +157,17 @@ function promisify(func) {
 
 let readFile = promisify(fs.readFile)
 
-/*
-readFile(path.resolve(__dirname+'/test/01.txt'), 'utf-8')
-.then(
-  (data) => {
-    console.log('success', data)
-  },
-  (err) => {
-    console.log('fail', err)
-  }
-)
-*/
+
+// readFile(path.resolve(__dirname+'/test/01.txt'), 'utf-8')
+// .then(
+//   (data) => {
+//     console.log('success', data)
+//   },
+//   (err) => {
+//     console.log('fail', err)
+//   }
+// )
+
 
 readFile(path.resolve(__dirname+'/test/01.txt'), 'utf-8')
 .then(
@@ -185,3 +186,53 @@ readFile(path.resolve(__dirname+'/test/01.txt'), 'utf-8')
     console.log('fail', err)
   }
 )
+*/
+
+
+// 实现链式调用的Promise类
+const PENDING = 'PENDING'
+const FULFILLED = 'FULFILLED'
+const REJECTED = 'REJECTED'
+class fakePromise {
+  constructor(executor){
+    this.status = PENDING
+    this._arrFulfilled = []
+    this._arrRejected = []
+    const resolve = (data) => {
+      if(this.status === PENDING) {
+        this.status = FULFILLED
+        this.data = data
+        this._arrFulfilled.forEach(cb => cb())
+      }
+    }
+    const reject = (reason) => {
+      if(this.status === PENDING) {
+        this.status = REJECTED
+        this.reason = reason
+        this._arrRejected.forEach(cb => cb())
+      }
+    }
+    try{
+      executor(resolve, reject);
+    }
+    catch(e) {
+      reject(e)
+    }
+  }
+  then(onFuifill, onReject) {
+    if(this.status === FULFILLED) {
+      onFuifill(this.data)
+    }
+    else if(this.status === REJECTED) {
+      onReject(this.reason)
+    }
+    else if(this.status === PENDING) {
+      this._arrFulfilled.push(() => {
+        onFuifill(this.data)
+      })
+      this._arrRejected.push(() => {
+        onReject(this.reason)
+      })
+    }
+  }
+}
