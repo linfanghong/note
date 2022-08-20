@@ -130,28 +130,58 @@ fs.readFile(path.resolve(__dirname+'/test/01.txt'), 'utf-8', (err, data) => {
 })
 */
 
-// 使用Promise实现链式调用
+// Promise进行了改善
+
+// 1. promisify函数简化创建Promise实例的过程
+
+// 1. then链式调用时，then中返回的是一个Promise对象
+// 2. 下一次走成功还是失败却决于当前Promise对象的状态
+// 3. 如果then返回的不是一个Promise对象，则默认是走成功的
+// 4. 如果Promise状态为失败或者抛出异常，则走失败
 
 const fs = require('fs')
 const path = require('path')
 
-const readtext = (pathName, encoding) => {
-  return new Promise((resolve, reject) => {
-    fs.readFile(pathName, encoding, (err, data) => {
-      if(err) {
-        return reject(err)
-      }
-      resolve(data)
+function promisify(func) {
+  return function(...args) {
+    const p = new Promise((resolve, reject) => {
+      func(...args, (err, data) => {
+        if(err) return reject(err)
+        resolve(data)
+      })
     })
-  })
+    return p
+  }
 }
 
-readtext(path.resolve(__dirname+'/test/01.txt'), 'utf-8')
+let readFile = promisify(fs.readFile)
+
+/*
+readFile(path.resolve(__dirname+'/test/01.txt'), 'utf-8')
 .then(
   (data) => {
     console.log('success', data)
   },
-  (reason) => {
-    console.log('fail', reason)
+  (err) => {
+    console.log('fail', err)
+  }
+)
+*/
+
+readFile(path.resolve(__dirname+'/test/01.txt'), 'utf-8')
+.then(
+  (data) => {
+    return readFile(path.resolve(__dirname+`/test/${data}`), 'utf-8')
+  },
+  (err) => {
+    console.log('fail', err)
+  }
+)
+.then(
+  (data) => {
+    console.log('success', data)
+  },
+  (err) => {
+    console.log('fail', err)
   }
 )
