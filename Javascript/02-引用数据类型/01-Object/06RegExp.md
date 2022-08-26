@@ -5,8 +5,15 @@
 ## 正则表达式的创建方式
 ### 字面量方式
 ```
-let pattern = /str/;
+let pattern = /str/g;
 console.log(pattern instanceof RegExp);
 
 // true
 ```
+### 构造函数的方式
+```
+let pattern = RegExp('str', 'g')
+console.log(pattern instanceof RegExp);
+
+// true
+```1
