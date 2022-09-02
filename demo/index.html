@@ -6,18 +6,25 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>演示案例</title>
   <style>
-    .box {
-      width: 100px;
-      height: 100px;
-      margin: 50px;
-      margin-left: 120px;
-      background-color: burlywood;
-      transform-origin: 0px 0px;
-      transform: rotate(45deg);
+    button {
+      font-size: 20px;
+      padding: 0.5em 1em;
+      margin-top: 100px;
+      margin-left: 300px;
+      color: #FFF;
+      background-color: #173b6d;
+      border: 0;
+      border-radius: 0.25em;
+      box-shadow: 0 0.25em 0 rgba(23, 59, 109, 0.3), inset 0 1px 0 rgba(0, 0, 0, 0.3);
+      transition: all 150ms;
+    }
+    button:active {
+      box-shadow: 0 0 0 rgba(23, 59, 109, 0.3), inset 0 1px 0 rgba(0, 0, 0, 0.3);
+      transform: translateY(0.25em);
     }
   </style>
 </head>
 <body>
-  <div class="box"></div>
+  <button>Press me</button>
 </body>
 </html>
