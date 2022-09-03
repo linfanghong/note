@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>闭包</title>
+</head>
+<body>
+  <ul>
+    <li>click me</li>
+    <li>click me</li>
+    <li>click me</li>
+    <li>click me</li>
+   </ul>
+   <script>
+    // version 1.0
+    // var elements=document.getElementsByTagName('li');
+    // var length=elements.length;
+    // for(var i=0;i<length;i++){
+    //     elements[i].onclick=function() {
+    //         alert(i);
+    //     }
+    // }
+
+    // version 2.0
+    // var elements=document.getElementsByTagName('li');
+    // var length=elements.length;
+    // for(let i=0;i<length;i++){
+    //     elements[i].onclick=function() {
+    //         alert(i);
+    //     }
+    // }
+
+    // version 3.0
+    var elements=document.getElementsByTagName('li');
+    var length=elements.length;
+    for(var i=0;i<length;i++){
+        elements[i].onclick=function(num) {
+            return function() {
+              alert(num);
+            }
+        }(i);
+    }
+   </script>
+</body>
+</html>
